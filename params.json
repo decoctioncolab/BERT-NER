@@ -1,0 +1,173 @@
+{
+    "data_dir": {
+        "default": "data/",
+        "type": "str",
+        "required": false,
+        "help": "The input data dir. Should contain the .tsv files (or other data files  for the task."
+    },
+    "bert_model": {
+        "default": "bert-base-cased",
+        "type": "str",
+        "required": false,
+        "help": "Bert pre-trained model selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese."
+    },
+    "task_name": {
+        "default": "ner",
+        "type": "str",
+        "required": false,
+        "help": "The name of the task to train."
+    },
+    "output_dir": {
+        "default": "out_base",
+        "type": "str",
+        "required": false,
+        "help": "The output directory where the model predictions and checkpoints will be written."
+    },
+                        
+
+  
+    "cache_dir": {
+        "default": "",
+        "type": "str",
+        "required": false,
+        "help": "Where do you want to store the pre-trained models downloaded from s3"
+    },
+    "max_seq_length": {
+        "default": 128,
+        "type": "int",
+        "required": false,
+        "help": "The maximum total input sequence length after WordPiece tokenization. \nSequences longer than this will be truncated, and sequences shorter \n than this will be padded."
+    },
+    "do_train": {
+        "default": true,
+        "type": "str",
+        "required": false,
+        "action": "store_true",
+        "help": "Whether to run training."
+    },
+    "do_eval": {
+        "default": true,
+        "type": "str",
+        "required": false,
+        "action": "store_true",
+        "help": "Whether to run eval or not."
+    },
+    "eval_on": {
+        "default": "dev",
+        "type": "str",
+        "required": false,
+        "help": "Whether to run eval on the dev set or test set."
+    },
+    "do_lower_case": {
+        "default": false,
+        "type": "str",
+        "required": false,
+        "action": "store_true",
+        "help": "Set this flag if you are using an uncased model."
+    },
+    "train_batch_size": {
+        "default": 32,
+        "type": "int",
+        "required": false,
+        "help": "Total batch size for training."
+    },
+    "eval_batch_size": {
+        "default": 8,
+        "type": "int",
+        "required": false,
+        "help": "Total batch size for eval."
+    },
+    "learning_rate": {
+        "default": 5e-5,
+        "type": "float",
+        "required": false,
+        "help": "The initial learning rate for Adam."
+    },
+    "num_train_epochs": {
+        "default": 3.0,
+        "type": "float",
+        "required": false,
+        "help": "Total number of training epochs to perform."
+    },
+    "warmup_proportion": {
+        "default": 0.1,
+        "type": "float",
+        "required": false,
+        "help": "Proportion of training to perform linear learning rate warmup for. E.g., 0.1 = 10%% of training. "
+    },
+    "weight_decay": {
+        "default": 0.01,
+        "type": "float",
+        "required": false,
+        "help": "Weight deay if we apply some."
+    },
+    "adam_epsilon": {
+        "default": 1e-8,
+        "type": "float",
+        "required": false,
+        "help": "Epsilon for Adam optimizer."
+    },
+    "max_grad_norm": {
+        "default": 1.0,
+        "type": "float",
+        "required": false,
+        "help": "Max gradient norm."
+    },
+    "no_cuda": {
+        "default": false,
+        "type": "str",
+        "required": false,
+        "action": "store_true",
+        "help": "Whether not to use CUDA when available"
+    },
+    "local_rank": {
+        "default": -1,
+        "type": "int",
+        "required": false,
+        "help": "local_rank for distributed training on gpus"
+    },
+    "seed": {
+        "default": 42,
+        "type": "int",
+        "required": false,
+        "help": "random seed for initialization"
+    },
+    "gradient_accumulation_steps": {
+        "default": 1,
+        "type": "int",
+        "required": false,
+        "help": "Number of updates steps to accumulate before performing a backward/update pass."
+    },
+    "fp16": {
+        "default": false,
+        "type": "str",
+        "required": false,
+        "action": "store_true",
+        "help": "Whether to use 16-bit float precision instead of 32-bit"
+    },
+                        
+                 
+    "fp16_opt_level":{"default": "O1",
+    "type": "str",
+    "required": false,
+    "help": "For fp16: Apex AMP optimization level selected in 0, 1, 2, and 3 See details at https://nvidia.github.io/apex/amp.html"
+},
+"loss_scale": {
+    "default": 0,
+    "type": "float",
+    "required": false,
+    "help": "Loss scaling to improve fp16 numeric stability. Only used when fp16 set to True.\n0 (default value : dynamic loss scaling.\nPositive power of 2: static loss scaling value.\n"
+},
+"server_ip": {
+    "default": "",
+    "type": "str",
+    "required": false,
+    "help": "Can be used for distant debugging."
+},
+"server_port": {
+    "default": "",
+    "type": "str",
+    "required": false,
+    "help": "Can be used for distant debugging."
+}
+}
