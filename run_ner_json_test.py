@@ -1,5 +1,8 @@
 from __future__ import absolute_import, division, print_function
 
+
+
+
 import argparse
 import csv
 import json
@@ -253,7 +256,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
                               label_mask=label_mask))
     return features
 
-def main():
+def train():
 
     parser = argparse.ArgumentParser(description='Process some files.')
 
@@ -504,5 +507,25 @@ def main():
             writer.write(report)
 
 
-if __name__ == "__main__":
-    main()
+import wandb
+    # e26103bc7bfddb358f861d2ba4ceaae86a72e0a6
+wandb.login()
+
+sweep_configuration = {
+ "name": "my-awesome-sweep",
+ "metric": {"name": "accuracy", "goal": "maximize"},
+ "method": "grid",
+ "parameters": {"a": {"values": [1, 2, 3, 4]}},
+}
+def my_train_func():
+ # read the current value of parameter "a" from wandb.config
+ wandb.init()
+ a = wandb.config.a
+
+ wandb.log({"a": a, "accuracy": a + 1})
+
+
+sweep_id = wandb.sweep(sweep_configuration)
+
+# run the sweep
+wandb.agent(sweep_id, function=my_train_func)
