@@ -509,20 +509,20 @@ def train():
 
 import wandb
     # e26103bc7bfddb358f861d2ba4ceaae86a72e0a6
-wandb.login()
+# wandb.login()
 
 sweep_configuration = {
  "name": "my-awesome-sweep",
  "metric": {"name": "accuracy", "goal": "maximize"},
  "method": "grid",
- "parameters": {"a": {"values": [1, 2, 3, 4]}},
+ "parameters": {"a": {"values": [1, 2, 3, 4]},"b":{"values":[4,5]}},
 }
 def my_train_func():
  # read the current value of parameter "a" from wandb.config
  wandb.init()
  a = wandb.config.a
-
- wandb.log({"a": a, "accuracy": a + 1})
+ b = wandb.config.b
+ wandb.log({"a": a, "accuracy": a + 1,"b":b})
 
 
 sweep_id = wandb.sweep(sweep_configuration)
