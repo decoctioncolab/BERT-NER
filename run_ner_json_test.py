@@ -509,7 +509,7 @@ def train():
 
 import wandb
     # e26103bc7bfddb358f861d2ba4ceaae86a72e0a6
-# wandb.login()
+wandb.login()
 
 sweep_configuration = {
  "name": "my-awesome-sweep",
