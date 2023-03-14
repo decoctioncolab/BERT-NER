@@ -84,7 +84,7 @@
         "help": "The initial learning rate for Adam."
     },
     "num_train_epochs": {
-        "default": 3.0,
+        "default": [1.0,3.0],
         "type": "float",
         "required": false,
         "help": "Total number of training epochs to perform."
