@@ -515,14 +515,14 @@ sweep_configuration = {
  "name": "my-awesome-sweep",
  "metric": {"name": "accuracy", "goal": "maximize"},
  "method": "grid",
- "parameters": {"a": {"values": [1, 2, 3, 4]},"b":{"values":[4,5]}},
+ "parameters": {"num_train_epochs": {"values": [1, 2]}},
 }
 def my_train_func():
  # read the current value of parameter "a" from wandb.config
  wandb.init()
- a = wandb.config.a
- b = wandb.config.b
- wandb.log({"a": a, "accuracy": a + 1,"b":b})
+ a = wandb.config.num_train_epochs
+ 
+ wandb.log({"num_train_epochs": a, "accuracy": a + 1})
 
 
 sweep_id = wandb.sweep(sweep_configuration)
