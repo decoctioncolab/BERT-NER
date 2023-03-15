@@ -1,0 +1,27 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.11
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.10.6
+    start_time: 1678879984.201463
+    t:
+      1:
+      - 55
+      2:
+      - 55
+      3:
+      - 2
+      - 13
+      - 23
+      - 37
+      4: 3.10.6
+      5: 0.13.11
+      8:
+      - 5
+num_train_epochs:
+  desc: null
+  value: 2

@@ -1,0 +1,57 @@
+{
+    "os": "Linux-5.19.0-32-generic-x86_64-with-glibc2.35",
+    "python": "3.10.6",
+    "heartbeatAt": "2023-03-15T08:05:11.924624",
+    "startedAt": "2023-03-15T08:05:10.383480",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/sam/WAVEAXIS/BERT-NER/wb_test.py",
+    "codePath": "wb_test.py",
+    "git": {
+        "remote": "git@github.com:decoctioncolab/BERT-NER.git",
+        "commit": "2ff503a679d7ebcf9d1a2879495d9ac5f02ad040"
+    },
+    "email": "sandip.more1303@gmail.com",
+    "root": "/home/sam/WAVEAXIS/BERT-NER",
+    "host": "sam-SVE15136CNS",
+    "username": "sam",
+    "executable": "/home/sam/WAVEAXIS/BERT-NER/VENV/bin/python",
+    "cpu_count": 2,
+    "cpu_count_logical": 4,
+    "cpu_freq": {
+        "current": 1509.92975,
+        "min": 1200.0,
+        "max": 3200.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2177.431,
+            "min": 1200.0,
+            "max": 3200.0
+        },
+        {
+            "current": 2618.149,
+            "min": 1200.0,
+            "max": 3200.0
+        },
+        {
+            "current": 2837.564,
+            "min": 1200.0,
+            "max": 3200.0
+        },
+        {
+            "current": 2631.978,
+            "min": 1200.0,
+            "max": 3200.0
+        }
+    ],
+    "disk": {
+        "total": 186.3111686706543,
+        "used": 55.875518798828125
+    },
+    "memory": {
+        "total": 7.713748931884766
+    }
+}

@@ -1,8 +1,5 @@
 from __future__ import absolute_import, division, print_function
 
-
-
-
 import argparse
 import csv
 import json
@@ -24,6 +21,10 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 
 from seqeval.metrics import classification_report
+
+# Import the W&B Python Library and log into W&B
+import wandb
+wandb.login(key='e26103bc7bfddb358f861d2ba4ceaae86a72e0a6',relogin=True,force=True)
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
@@ -255,23 +256,116 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
                               valid_ids=valid,
                               label_mask=label_mask))
     return features
+exp=1
+# def main():
+#     wandb.log({'num_train_epochs': wandb.config.num_train_epochs})
 
-def train():
+def main():
+    global exp
+    wandb.init(name='Exp#'+str(exp))
+    exp+=1
 
-    parser = argparse.ArgumentParser(description='Process some files.')
+    parser = argparse.ArgumentParser()
 
+    ## Required parameters
+    parser.add_argument("--data_dir",
+                        default=None,
+                        type=str,
+                        required=True,
+                        help="The input data dir. Should contain the .tsv files (or other data files) for the task.")
+    parser.add_argument("--bert_model", default=None, type=str, required=True,
+                        help="Bert pre-trained model selected in the list: bert-base-uncased, "
+                        "bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, "
+                        "bert-base-multilingual-cased, bert-base-chinese.")
+    parser.add_argument("--task_name",
+                        default=None,
+                        type=str,
+                        required=True,
+                        help="The name of the task to train.")
+    parser.add_argument("--output_dir",
+                        default=None,
+                        type=str,
+                        required=True,
+                        help="The output directory where the model predictions and checkpoints will be written.")
 
-    with open('params.json') as f:
-        params = json.load(f)
-        for param_name, d in params.items():
-            # print(param_name,d.keys())
-            if ('action' in d):
-                # print(param_name,d.keys())
-                parser.add_argument(
-                    f'--{param_name}', action=d['action'], default=d['default'], required=d['required'], help=d['help'])
-            else:
-                parser.add_argument(f'--{param_name}', default=d['default'], type=type(
-                    d['type']), required=d['required'], help=d['help'])
+    ## Other parameters
+    parser.add_argument("--cache_dir",
+                        default="",
+                        type=str,
+                        help="Where do you want to store the pre-trained models downloaded from s3")
+    parser.add_argument("--max_seq_length",
+                        default=128,
+                        type=int,
+                        help="The maximum total input sequence length after WordPiece tokenization. \n"
+                             "Sequences longer than this will be truncated, and sequences shorter \n"
+                             "than this will be padded.")
+    parser.add_argument("--do_train",
+                        action='store_true',
+                        help="Whether to run training.")
+    parser.add_argument("--do_eval",
+                        action='store_true',
+                        help="Whether to run eval or not.")
+    parser.add_argument("--eval_on",
+                        default="dev",
+                        help="Whether to run eval on the dev set or test set.")
+    parser.add_argument("--do_lower_case",
+                        action='store_true',
+                        help="Set this flag if you are using an uncased model.")
+    parser.add_argument("--train_batch_size",
+                        default=32,
+                        type=int,
+                        help="Total batch size for training.")
+    parser.add_argument("--eval_batch_size",
+                        default=8,
+                        type=int,
+                        help="Total batch size for eval.")
+    parser.add_argument("--learning_rate",
+                        default=5e-5,
+                        type=float,
+                        help="The initial learning rate for Adam.")
+    parser.add_argument("--num_train_epochs",
+                        default=3.0,
+                        type=float,
+                        help="Total number of training epochs to perform.")
+    parser.add_argument("--warmup_proportion",
+                        default=0.1,
+                        type=float,
+                        help="Proportion of training to perform linear learning rate warmup for. "
+                             "E.g., 0.1 = 10%% of training.")
+    parser.add_argument("--weight_decay", default=0.01, type=float,
+                        help="Weight deay if we apply some.")
+    parser.add_argument("--adam_epsilon", default=1e-8, type=float,
+                        help="Epsilon for Adam optimizer.")
+    parser.add_argument("--max_grad_norm", default=1.0, type=float,
+                        help="Max gradient norm.")
+    parser.add_argument("--no_cuda",
+                        action='store_true',
+                        help="Whether not to use CUDA when available")
+    parser.add_argument("--local_rank",
+                        type=int,
+                        default=-1,
+                        help="local_rank for distributed training on gpus")
+    parser.add_argument('--seed',
+                        type=int,
+                        default=42,
+                        help="random seed for initialization")
+    parser.add_argument('--gradient_accumulation_steps',
+                        type=int,
+                        default=1,
+                        help="Number of updates steps to accumulate before performing a backward/update pass.")
+    parser.add_argument('--fp16',
+                        action='store_true',
+                        help="Whether to use 16-bit float precision instead of 32-bit")
+    parser.add_argument('--fp16_opt_level', type=str, default='O1',
+                        help="For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']."
+                             "See details at https://nvidia.github.io/apex/amp.html")
+    parser.add_argument('--loss_scale',
+                        type=float, default=0,
+                        help="Loss scaling to improve fp16 numeric stability. Only used when fp16 set to True.\n"
+                             "0 (default value): dynamic loss scaling.\n"
+                             "Positive power of 2: static loss scaling value.\n")
+    parser.add_argument('--server_ip', type=str, default='', help="Can be used for distant debugging.")
+    parser.add_argument('--server_port', type=str, default='', help="Can be used for distant debugging.")
     args = parser.parse_args()
 
     if args.server_ip and args.server_port:
@@ -397,10 +491,10 @@ def train():
         train_dataloader = DataLoader(train_data, sampler=train_sampler, batch_size=args.train_batch_size)
 
         model.train()
-        for _ in trange(int(args.num_train_epochs), desc="Epoch Number"):
-            tr_loss = 0 
+        for _ in trange(int(args.num_train_epochs), desc="Epoch"):
+            tr_loss = 0
             nb_tr_examples, nb_tr_steps = 0, 0
-            for step, batch in enumerate(tqdm(train_dataloader, desc="Iteration Number")):
+            for step, batch in enumerate(tqdm(train_dataloader, desc="Iteration")):
                 batch = tuple(t.to(device) for t in batch)
                 input_ids, input_mask, segment_ids, label_ids, valid_ids,l_mask = batch
                 loss = model(input_ids, segment_ids, input_mask, label_ids,valid_ids,l_mask)
@@ -408,7 +502,7 @@ def train():
                     loss = loss.mean() # mean() to average on multi-gpu.
                 if args.gradient_accumulation_steps > 1:
                     loss = loss / args.gradient_accumulation_steps
-
+                wandb.log({'loss':loss})
                 if args.fp16:
                     with amp.scale_loss(loss, optimizer) as scaled_loss:
                         scaled_loss.backward()
@@ -499,6 +593,7 @@ def train():
                         temp_2.append(label_map[logits[i][j]])
 
         report = classification_report(y_true, y_pred,digits=4)
+        # wandb.log({'report': report})
         logger.info("\n%s", report)
         output_eval_file = os.path.join(args.output_dir, "eval_results.txt")
         with open(output_eval_file, "w") as writer:
@@ -507,27 +602,19 @@ def train():
             writer.write(report)
 
 
-# Import the W&B Python Library and log into W&B
-import wandb
-wandb.login(key='e26103bc7bfddb358f861d2ba4ceaae86a72e0a6',relogin=True,force=True)
+if __name__ == "__main__":
+    # Import the W&B Python Library and log into W&B
+    import wandb
+    wandb.login(key='e26103bc7bfddb358f861d2ba4ceaae86a72e0a6',relogin=True,force=True)
 
+ 
+    # 2: Define the search space
+    sweep_configuration = {
+        'method': 'random',
+        'metric': {'goal': 'minimize', 'name': 'score'},
+        "parameters": {"num_train_epochs": {"values": [1, 2] }}
+    }
 
-
-
-exp=1
-def main():
-    global exp
-    wandb.init(name='Exp#'+str(exp))
-    exp+=1
-    wandb.log({'num_train_epochs': wandb.config.num_train_epochs})
-
-# 2: Define the search space
-sweep_configuration = {
-    'method': 'random',
-    'metric': {'goal': 'minimize', 'name': 'score'},
-    "parameters": {"num_train_epochs": {"values": [1, 2] }}
-}
-
-# 3: Start the sweep
-sweep_id = wandb.sweep(sweep=sweep_configuration, project='my-first-sweep')
-wandb.agent(sweep_id, function=main, count=2)
+    # 3: Start the sweep
+    sweep_id = wandb.sweep(sweep=sweep_configuration, project='my-first-sweep')
+    wandb.agent(sweep_id, function=main, count=2)
