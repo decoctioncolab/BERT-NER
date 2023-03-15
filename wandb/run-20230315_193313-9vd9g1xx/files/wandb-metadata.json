@@ -1,0 +1,57 @@
+{
+    "os": "Linux-5.19.0-32-generic-x86_64-with-glibc2.35",
+    "python": "3.10.6",
+    "heartbeatAt": "2023-03-15T14:03:14.947619",
+    "startedAt": "2023-03-15T14:03:13.209986",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/sam/WAVEAXIS/BERT-NER/run_ner_wandb.py",
+    "codePath": "run_ner_wandb.py",
+    "git": {
+        "remote": "git@github.com:decoctioncolab/BERT-NER.git",
+        "commit": "52de995d431cadd694b8b5ee769629a035f27151"
+    },
+    "email": "sandip.more1303@gmail.com",
+    "root": "/home/sam/WAVEAXIS/BERT-NER",
+    "host": "sam-SVE15136CNS",
+    "username": "sam",
+    "executable": "/home/sam/WAVEAXIS/BERT-NER/VENV/bin/python",
+    "cpu_count": 2,
+    "cpu_count_logical": 4,
+    "cpu_freq": {
+        "current": 2120.5375,
+        "min": 1200.0,
+        "max": 3200.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2408.937,
+            "min": 1200.0,
+            "max": 3200.0
+        },
+        {
+            "current": 2112.269,
+            "min": 1200.0,
+            "max": 3200.0
+        },
+        {
+            "current": 1467.61,
+            "min": 1200.0,
+            "max": 3200.0
+        },
+        {
+            "current": 2493.334,
+            "min": 1200.0,
+            "max": 3200.0
+        }
+    ],
+    "disk": {
+        "total": 186.3111686706543,
+        "used": 55.856285095214844
+    },
+    "memory": {
+        "total": 7.713752746582031
+    }
+}

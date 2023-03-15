@@ -282,6 +282,11 @@ def main():
                     d['type']), required=d['required'], help=d['help'])
     args = parser.parse_args()
 
+    updates = {"output_dir":'./out/'+ename}
+    for key, value in updates.items():
+        setattr(args, key, value)
+ 
+
     if args.server_ip and args.server_port:
         # Distant debugging - see https://code.visualstudio.com/docs/python/debugging#_attach-to-a-local-script
         import ptvsd
