@@ -531,4 +531,4 @@ def my_train_func():
 sweep_id = wandb.sweep(sweep_configuration)
 
 # run the sweep
-wandb.agent(sweep_id, function=my_train_func,project='my-test-project')
+wandb.agent(sweep_id, function=my_train_func)
