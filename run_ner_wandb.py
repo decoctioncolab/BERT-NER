@@ -441,7 +441,7 @@ def main():
 
         # Save a trained model and the associated configuration
         model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
-        args.output_dir=ename
+       
         model_to_save.save_pretrained(args.output_dir)
         tokenizer.save_pretrained(args.output_dir)
         label_map = {i : label for i, label in enumerate(label_list,1)}
