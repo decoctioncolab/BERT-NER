@@ -517,9 +517,11 @@ sweep_configuration = {
  "method": "grid",
  "parameters": {"num_train_epochs": {"values": [1, 2]}},
 }
+expt_no=1
 def my_train_func():
  # read the current value of parameter "a" from wandb.config
- wandb.init()
+ wandb.init(name='my-test-'+str(expt_no))
+ expt_no+=1
  a = wandb.config.num_train_epochs
  
  wandb.log({"num_train_epochs": a, "accuracy": a + 1})
@@ -528,4 +530,4 @@ def my_train_func():
 sweep_id = wandb.sweep(sweep_configuration)
 
 # run the sweep
-wandb.agent(sweep_id, function=my_train_func)
+wandb.agent(sweep_id, function=my_train_func,project='my-test-project')
